@@ -1,109 +1,223 @@
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
-import logo from './logo.svg';
-import { Box, Button, HStack, Heading, Image, Input, InputGroup, InputLeftAddon, NumberInput, NumberInputField, Select, Spinner, VStack, useClipboard } from '@chakra-ui/react';
-import password from "./assets/password.jpg";
-import { useState } from 'react';
-import { getGeneratePassword } from './openai/api';
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  Image,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  NumberInput,
+  NumberInputField,
+  Select,
+  Spinner,
+  Text,
+  Tooltip,
+  VStack,
+  useClipboard,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import password from "./assets/password.png";
+import { getGeneratePassword } from "./openai/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FcGoogle } from "react-icons/fc";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { IoMdLogOut } from "react-icons/io";
+import AliasPopup from "./components/AliasPopup";
+import Layout from "./layout";
+import ProfilePopup from "./components/ProfilePopup";
 
 const getOptionComplexity = (option) => {
   let options = {
-    "1": "Letras mayúsculas",
-    "2": "Letras minúsculas",
-    "3": "Números y Caracteres especiales",
-    "4": "Letras mayúsculas, Letras minúsculas, Números y Caracteres especiales"
+    1: "Letras mayúsculas",
+    2: "Letras minúsculas",
+    3: "Números y Caracteres especiales",
+    4: "Letras mayúsculas, Letras minúsculas, Números y Caracteres especiales",
   };
   return options[option];
-}
+};
 
 function App() {
+  const [disabledSave, setDisabledSave] = useState(true);
   const [generatePassword, setGeneratePassword] = useState(null);
   const [long, setLong] = useState(null);
   const [complexity, setComplexity] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [aliasPassword, setAliasPassword] = useState(null);
   const { onCopy, value, setValue, hasCopied } = useClipboard(generatePassword);
 
   const GetPasswordSecurityAI = async (event) => {
     event.preventDefault();
     setIsLoading(true);
-    const password = await getGeneratePassword(long, getOptionComplexity(complexity));
-    console.log("Password security: " + JSON.stringify(password.choices[0].message.content, null, 2));
+    const password = await getGeneratePassword(
+      long,
+      getOptionComplexity(complexity)
+    );
     const passwordGenerator = password.choices[0].message.content;
     setGeneratePassword(passwordGenerator);
+    setDisabledSave(false);
     setIsLoading(false);
     return password;
-  }
+  };
+
+  const handleGoogleProvider = () => {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        toast.success(`Haz iniciado sesión como ${user?.displayName}`);
+      })
+      .catch((error) => {
+        console.log("error: ", error);
+      });
+  };
+
+  const handleLogout = async () => {
+    const auth = getAuth();
+    await auth.signOut();
+    setDisabledSave(true);
+    toast.success("¡Cierre de sesión exitosa!");
+  };
 
   return (
-    <Box>
+    <Layout>
       <Navbar />
-      <HStack w={'100%'}>
-        <Box bg={'#F4EEE0'} h={'100vh'} w={'50%'}>
-          <Box textAlign={'center'}>
-            <Heading color={'#1E5F74'} mt={10}>Crea contraseñas de manera <br /> segura con IA</Heading>
+      <HStack w={"100%"}>
+        <Box bg={"#EFF5F5"} h={"100vh"} w={"50%"}>
+          <Box textAlign={"center"}>
+            <Heading color={"#1E5F74"} mt={10}>
+              Genera contraseñas seguras <br /> al instante con IA
+            </Heading>
+            <Text marginTop={10}>
+              Dile la longitud y la complejidad que quieres que tenga y <br />{" "}
+              deja que con el poder de la IA genere tu contraseña
+            </Text>
           </Box>
           <Box mt={10}>
-            <VStack spacing={10} w={{ base: '100%', md: '80%', lg: '50%' }} m={'auto'}>
+            <VStack
+              spacing={10}
+              w={{ base: "100%", md: "80%", lg: "50%" }}
+              m={"auto"}
+            >
               <InputGroup>
-                <InputLeftAddon bg={'#1E5F74'} color={'#ffffff'}>
+                <InputLeftAddon bg={"#1E5F74"} color={"#ffffff"}>
                   Longitud
                 </InputLeftAddon>
-                <NumberInput max={25} min={8} w={'100%'}>
-                  <NumberInputField placeholder='Ingrese la longitud de la contraseña' bg={'white'} onChange={(e) => setLong(e.target.value)}/>
+                <NumberInput max={25} min={8} w={"100%"}>
+                  <NumberInputField
+                    placeholder="Ingrese la longitud de la contraseña"
+                    bg={"white"}
+                    onChange={(e) => setLong(e.target.value)}
+                  />
                 </NumberInput>
               </InputGroup>
-              <Select bg={'#1E5F74'} placeholder='Escoja la complejidad de la contraseña' color={"#ffffff"} onChange={(e) => setComplexity(e.target.value)}>
-                <option value='1' style={{ color: "#1E5F74" }}>Letras mayúsculas</option>
-                <option value='2' style={{ color: "#1E5F74" }}>Letras minúsculas</option>
-                <option value='3' style={{ color: "#1E5F74" }}>Números y caractéres especiales</option>
-                <option value='4' style={{ color: "#1E5F74" }}>Todas las anteriores</option>
+              <Select
+                bg={"#1E5F74"}
+                placeholder="Escoja la complejidad de la contraseña"
+                color={"#ffffff"}
+                onChange={(e) => setComplexity(e.target.value)}
+              >
+                <option value="1" style={{ color: "#1E5F74" }}>
+                  Letras mayúsculas
+                </option>
+                <option value="2" style={{ color: "#1E5F74" }}>
+                  Letras minúsculas
+                </option>
+                <option value="3" style={{ color: "#1E5F74" }}>
+                  Números y caractéres especiales
+                </option>
+                <option value="4" style={{ color: "#1E5F74" }}>
+                  Todas las anteriores
+                </option>
               </Select>
-              <Box>
+              <VStack spacing={5}>
+                <Tooltip label="Escoge la logitud y la complejidad">
+                  <Button
+                    onClick={GetPasswordSecurityAI}
+                    colorScheme="orange"
+                    isDisabled={!long || !complexity}
+                    isLoading={isLoading}
+                  >
+                    Generar contraseña con IA
+                  </Button>
+                </Tooltip>
                 <Button
-                  onClick={GetPasswordSecurityAI}
-                  colorScheme='orange'
-                  isDisabled={!long || !complexity}
-                  isLoading={isLoading}>
-                  Generar contraseña con IA
+                  leftIcon={<FcGoogle />}
+                  onClick={handleGoogleProvider}
+                  variant={"outline"}
+                  colorScheme="white"
+                >
+                  Ingresa con Google
                 </Button>
-              </Box>
+              </VStack>
             </VStack>
           </Box>
         </Box>
-        <VStack w={'50%'} height={'100vh'}>
-          <Image mt={100} src={password} height={300} width={300} borderRadius={10} />
-          {
-            isLoading ? <Spinner
+        <VStack w={"50%"} height={"100vh"}>
+          <Flex marginTop={5} width={"90%"} justifyContent={"space-between"}>
+            <ProfilePopup />
+            <Button
+              rightIcon={<IoMdLogOut />}
+              colorScheme="orange"
+              onClick={handleLogout}
+            >
+              Salir
+            </Button>
+          </Flex>
+          <Image
+            mt={50}
+            src={password}
+            height={300}
+            width={300}
+            borderRadius={10}
+          />
+          {isLoading ? (
+            <Spinner
               mt={10}
-              thickness='4px'
-              speed='0.65s'
-              emptyColor='gray.200'
-              color='green.500'
-              size='xl'
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="green.500"
+              size="xl"
             />
-              :
-              <VStack spacing={5} width={'50%'} mt={50}>
-                <Input
-                  placeholder="Contraseña Generada"
-                  value={value}
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                  }}
-                  readOnly
-                  fontSize={30}
-                  variant={'unstyled'}
-                  textAlign={'center'}
+          ) : (
+            <VStack spacing={5} width={"50%"} mt={50}>
+              <Input
+                placeholder="Contraseña Generada"
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                }}
+                readOnly
+                fontSize={30}
+                variant={"unstyled"}
+                textAlign={"center"}
+              />
+              <Button
+                colorScheme="orange"
+                onClick={onCopy}
+                isDisabled={!generatePassword}
+              >
+                {hasCopied ? "Copiado!" : "Copiar Contraseña"}
+              </Button>
+              <Box>
+                <AliasPopup
+                  password={generatePassword}
+                  isDisabledPopup={generatePassword}
                 />
-                <Button
-                  colorScheme='orange'
-                  onClick={onCopy}
-                  isDisabled={!generatePassword}>{hasCopied ? "Copiado!" : "Copiar Contraseña"}</Button>
-              </VStack>
-          }
+              </Box>
+            </VStack>
+          )}
         </VStack>
       </HStack>
       <Footer />
-    </Box>
+      <ToastContainer />
+    </Layout>
   );
 }
 
