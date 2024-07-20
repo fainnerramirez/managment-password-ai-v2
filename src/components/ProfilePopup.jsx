@@ -25,6 +25,10 @@ import {
   TableContainer,
   Text,
   Code,
+  Spinner,
+  Wrap,
+  WrapItem,
+  Avatar,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { GetPasswordsByUser, registerPassword } from "../firebase/actions";
@@ -74,7 +78,12 @@ const ProfilePopup = ({ password }) => {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader background={"#DD6B20"} color={"#FFFFFF"}>
-            ¡Bienvenido {user?.displayName}!
+            <Wrap>
+              <WrapItem display={"flex"} alignItems={"center"}>
+                <Avatar size="md" name="Dan Abrahmov" src={user?.photoURL} />
+                <Text ml={5}>¡Bienvenido {user?.displayName}! </Text>
+              </WrapItem>
+            </Wrap>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -101,17 +110,28 @@ const ProfilePopup = ({ password }) => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {resultPassword.map((item, index) => (
-                    <Tr key={index}>
-                      <Td>{item.alias}</Td>
-                      <Td>{moment(item.dateCreated).fromNow()}</Td>
-                      <Td>
-                        <Button size="sm" variant="ghost" onClick={undefined}>
-                          Ver contraseña
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
+                  {resultPassword.length ? (
+                    resultPassword.map((item, index) => (
+                      <Tr key={index}>
+                        <Td>{item.alias}</Td>
+                        <Td>{moment(item.dateCreated).fromNow()}</Td>
+                        <Td>
+                          <Button size="sm" variant="ghost" onClick={undefined}>
+                            Ver contraseña
+                          </Button>
+                        </Td>
+                      </Tr>
+                    ))
+                  ) : (
+                    <Spinner
+                      mt={10}
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="green.500"
+                      size="xl"
+                    />
+                  )}
                 </Tbody>
               </Table>
             </TableContainer>
