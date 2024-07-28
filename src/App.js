@@ -19,7 +19,7 @@ import {
   VStack,
   useClipboard,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import password from "./assets/password.png";
 import { getGeneratePassword } from "./openai/api";
 import { ToastContainer, toast } from "react-toastify";
@@ -30,6 +30,8 @@ import { IoMdLogOut } from "react-icons/io";
 import AliasPopup from "./components/AliasPopup";
 import Layout from "./layout";
 import ProfilePopup from "./components/ProfilePopup";
+import { UserContext } from "./context/userContext";
+import CreatePasswordPopup from "./components/createPassword";
 
 const getOptionComplexity = (option) => {
   let options = {
@@ -146,6 +148,9 @@ function App() {
                     Generar contraseña con IA
                   </Button>
                 </Tooltip>
+                <Box>
+                  <CreatePasswordPopup />
+                </Box>
                 <Button
                   leftIcon={<FcGoogle />}
                   onClick={handleGoogleProvider}

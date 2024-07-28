@@ -6,6 +6,7 @@ import {
   query,
   where,
   getDocs,
+  orderBy,
 } from "firebase/firestore";
 import { db } from "../config";
 
@@ -26,7 +27,11 @@ export const registerPassword = async (document) => {
 };
 
 export const GetPasswordsByUser = async (userId = null) => {
-  const q = query(collection(db, "passwords"), where("userId", "==", userId));
+  const q = query(
+    collection(db, "passwords"),
+    orderBy("dateCreated"),
+    where("userId", "==", userId)
+  );
   const querySnapshot = await getDocs(q);
   let data = [];
 

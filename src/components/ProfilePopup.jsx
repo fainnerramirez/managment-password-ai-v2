@@ -51,10 +51,11 @@ const ProfilePopup = ({ password }) => {
     const GetAll = async (event) => {
       const response = await GetPasswordsByUser(user?.uid);
       setResultPassword(response);
+      return;
     };
 
     GetAll();
-  }, [resultPassword]);
+  }, [user]);
 
   return (
     <>
