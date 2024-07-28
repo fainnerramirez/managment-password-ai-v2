@@ -42,9 +42,7 @@ const AliasPopup = ({ password, isDisabledPopup }) => {
         password: password,
         dateCreated: moment().format(),
       };
-      console.log("Document: ", documentpassword);
       const response = await registerPassword(documentpassword);
-      console.log("Reponse : ", response);
 
       if (response.status === "success") {
         toast.success("Contraseña registrada exitosamente!");
