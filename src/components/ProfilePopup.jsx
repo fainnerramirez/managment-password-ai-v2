@@ -31,7 +31,7 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
-import { GetPasswordsByUser, registerPassword } from "../firebase/actions";
+import { GetPasswordsByUser } from "../firebase/actions";
 import { toast } from "react-toastify";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import moment from "moment/moment";

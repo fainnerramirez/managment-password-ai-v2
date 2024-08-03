@@ -46,6 +46,9 @@ const AliasPopup = ({ password, isDisabledPopup }) => {
 
       if (response.status === "success") {
         toast.success("Contraseña registrada exitosamente!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else if (response.status === "error") {
         toast.error("Hubo un error al registrar la contraseña");
       }

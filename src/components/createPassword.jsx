@@ -45,6 +45,9 @@ const CreatePasswordPopup = () => {
 
       if (response.status === "success") {
         toast.success("Contraseña personalizada registrada exitosamente!");
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       } else if (response.status === "error") {
         toast.error("Hubo un error al registrar la contraseña personalizada");
       }
