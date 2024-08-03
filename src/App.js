@@ -90,14 +90,14 @@ function App() {
     <Layout>
       <Navbar />
       <HStack w={"100%"}>
-        <Box bg={"#EFF5F5"} h={"100vh"} w={"50%"}>
+        <Box bg={"#2d3250"} h={"100vh"} w={"50%"}>
           <Box textAlign={"center"}>
-            <Heading color={"#1E5F74"} mt={10}>
+            <Heading color={"#ffffff"} mt={10}>
               Genera contraseñas seguras <br /> al instante con IA
             </Heading>
-            <Text marginTop={10}>
+            <Text marginTop={10} color={"#f9b17a"}>
               Dile la longitud y la complejidad que quieres que tenga y <br />{" "}
-              deja que con el poder de la IA genere tu contraseña
+              deja que la IA genere tu contraseña
             </Text>
           </Box>
           <Box mt={10}>
@@ -107,7 +107,7 @@ function App() {
               m={"auto"}
             >
               <InputGroup>
-                <InputLeftAddon bg={"#1E5F74"} color={"#ffffff"}>
+                <InputLeftAddon bg={"#DD6B20"} color={"#2d3250"}>
                   Longitud
                 </InputLeftAddon>
                 <NumberInput max={25} min={8} w={"100%"}>
@@ -119,9 +119,9 @@ function App() {
                 </NumberInput>
               </InputGroup>
               <Select
-                bg={"#1E5F74"}
+                bg={"#DD6B20"}
                 placeholder="Escoja la complejidad de la contraseña"
-                color={"#ffffff"}
+                color={"#2d3250"}
                 onChange={(e) => setComplexity(e.target.value)}
               >
                 <option value="1" style={{ color: "#1E5F74" }}>
@@ -141,9 +141,10 @@ function App() {
                 <Tooltip label="Escoge la logitud y la complejidad">
                   <Button
                     onClick={GetPasswordSecurityAI}
-                    colorScheme="orange"
                     isDisabled={!long || !complexity}
                     isLoading={isLoading}
+                    color={"#2d3250"}
+                    colorScheme="orange"
                   >
                     Generar contraseña con IA
                   </Button>
@@ -155,7 +156,7 @@ function App() {
                   leftIcon={<FcGoogle />}
                   onClick={handleGoogleProvider}
                   variant={"outline"}
-                  colorScheme="white"
+                  colorScheme="orange"
                 >
                   Ingresa con Google
                 </Button>

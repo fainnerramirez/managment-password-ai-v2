@@ -53,7 +53,7 @@ const CreatePasswordPopup = () => {
 
   return (
     <>
-      <Tooltip label="Crea una cuenta personalizada">
+      <Tooltip label="Debes iniciar sesión">
         <Button
           colorScheme="orange"
           onClick={onOpen}

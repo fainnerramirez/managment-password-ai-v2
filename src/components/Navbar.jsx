@@ -3,8 +3,8 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <Box padding={10} bg={"#26355D"}>
-      <Heading color={"#fff"} fontSize={30} textAlign={"center"}>
+    <Box padding={10} bg={"#424769"}>
+      <Heading color={"#fff"} fontSize={30} textAlign={"left"}>
         Passwords.ai
       </Heading>
     </Box>
