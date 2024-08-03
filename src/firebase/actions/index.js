@@ -36,8 +36,26 @@ export const GetPasswordsByUser = async (userId = null) => {
   let data = [];
 
   querySnapshot.forEach((doc) => {
-    data.push({ ...doc.data() });
+    let getData = {
+      id: doc.id,
+      ...doc.data(),
+    };
+    data.push(getData);
   });
 
   return data;
+};
+
+export const GetPasswordById = async (passwordId) => {
+  const docRef = doc(db, "passwords", passwordId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Document data Single:", docSnap.data());
+    return docSnap.data();
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+    return null;
+  }
 };

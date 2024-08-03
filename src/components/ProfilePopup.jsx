@@ -31,12 +31,12 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
-import { GetPasswordsByUser } from "../firebase/actions";
+import { GetPasswordById, GetPasswordsByUser } from "../firebase/actions";
 import { toast } from "react-toastify";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import moment from "moment/moment";
 import { UserContext } from "../context/userContext";
-import { FaUserCog } from "react-icons/fa";
+import { FaRegEye, FaUserCog } from "react-icons/fa";
 import "moment/locale/es";
 moment.locale("es");
 
@@ -44,12 +44,19 @@ const ProfilePopup = ({ password }) => {
   const [alias, setAlias] = useState("");
   const [disableSave, setDisabledSave] = useState(false);
   const [resultPassword, setResultPassword] = useState([]);
+  const [viewPass, setViewPass] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
+
+  const HandlePasswordSingle = async (passwordId) => {
+    const response = await GetPasswordById(passwordId);
+    console.log("Response get password Single: ", response);
+  };
 
   useEffect(() => {
     const GetAll = async (event) => {
       const response = await GetPasswordsByUser(user?.uid);
+      console.log("Response get all: ", response);
       setResultPassword(response);
       return;
     };
@@ -117,9 +124,20 @@ const ProfilePopup = ({ password }) => {
                         <Td>{item.alias}</Td>
                         <Td>{moment(item.dateCreated).fromNow()}</Td>
                         <Td>
-                          <Button size="sm" variant="ghost" onClick={undefined}>
-                            Ver contraseña
-                          </Button>
+                          <Input
+                            margin={0}
+                            padding={0}
+                            type={viewPass ? "text" : "password"}
+                            size="sm"
+                            variant="ghost"
+                            value={item.password}
+                          />
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setViewPass(true)}
+                            rightIcon={<FaRegEye />}
+                          ></Button>
                         </Td>
                       </Tr>
                     ))
