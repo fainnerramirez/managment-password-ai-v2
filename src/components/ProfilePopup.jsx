@@ -29,6 +29,8 @@ import {
   Wrap,
   WrapItem,
   Avatar,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { GetPasswordById, GetPasswordsByUser } from "../firebase/actions";
@@ -36,7 +38,7 @@ import { toast } from "react-toastify";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import moment from "moment/moment";
 import { UserContext } from "../context/userContext";
-import { FaRegEye, FaUserCog } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash, FaUserCog } from "react-icons/fa";
 import "moment/locale/es";
 moment.locale("es");
 
@@ -123,33 +125,29 @@ const ProfilePopup = ({ password }) => {
                       <Tr key={index}>
                         <Td>{item.alias}</Td>
                         <Td>{moment(item.dateCreated).fromNow()}</Td>
-                        <Td>
-                          <Input
-                            margin={0}
-                            padding={0}
-                            type={viewPass ? "text" : "password"}
-                            size="sm"
-                            variant="ghost"
-                            value={item.password}
-                          />
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => setViewPass(true)}
-                            rightIcon={<FaRegEye />}
-                          ></Button>
+                        <Td width={200}>
+                          <InputGroup size="md">
+                            <Input
+                              width={150}
+                              pr="4.5rem"
+                              type={viewPass ? "text" : "password"}
+                              value={item.password}
+                            />
+                            <InputRightElement width="4.5rem">
+                              <Button
+                                h="1.75rem"
+                                size="sm"
+                                onClick={() => setViewPass(!viewPass)}
+                              >
+                                {viewPass ? <FaRegEyeSlash /> : <FaRegEye />}
+                              </Button>
+                            </InputRightElement>
+                          </InputGroup>
                         </Td>
                       </Tr>
                     ))
                   ) : (
-                    <Spinner
-                      mt={10}
-                      thickness="4px"
-                      speed="0.65s"
-                      emptyColor="gray.200"
-                      color="green.500"
-                      size="xl"
-                    />
+                    <Text>No hay contraseñas guardadas</Text>
                   )}
                 </Tbody>
               </Table>
