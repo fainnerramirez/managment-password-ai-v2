@@ -32,6 +32,7 @@ import Layout from "./layout";
 import ProfilePopup from "./components/ProfilePopup";
 import { UserContext } from "./context/userContext";
 import CreatePasswordPopup from "./components/createPassword";
+import { FaHandHoldingHeart } from "react-icons/fa";
 
 const getOptionComplexity = (option) => {
   let options = {
@@ -160,6 +161,19 @@ function App() {
                 >
                   Ingresa con Google
                 </Button>
+                <Box>
+                  <Button
+                    as="a"
+                    href="https://link.mercadopago.com.co/sponsorsup"
+                    target="_blank"
+                    rightIcon={<FaHandHoldingHeart />}
+                    onClick={undefined}
+                    variant={"solid"}
+                    colorScheme="blue"
+                  >
+                    Ser Sponsor
+                  </Button>
+                </Box>
               </VStack>
             </VStack>
           </Box>

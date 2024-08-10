@@ -51,14 +51,12 @@ const ProfilePopup = ({ password }) => {
   const { user } = useContext(UserContext);
 
   const HandlePasswordSingle = async (passwordId) => {
-    const response = await GetPasswordById(passwordId);
-    console.log("Response get password Single: ", response);
+    await GetPasswordById(passwordId);
   };
 
   useEffect(() => {
     const GetAll = async (event) => {
       const response = await GetPasswordsByUser(user?.uid);
-      console.log("Response get all: ", response);
       setResultPassword(response);
       return;
     };

@@ -18,7 +18,6 @@ export const registerPassword = async (document) => {
       data: docRef,
     };
   } catch (e) {
-    console.error("Error adding password: ", e);
     return {
       status: "error",
       data: null,
@@ -51,11 +50,8 @@ export const GetPasswordById = async (passwordId) => {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log("Document data Single:", docSnap.data());
     return docSnap.data();
   } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
     return null;
   }
 };
