@@ -15,6 +15,7 @@ import {
   ModalOverlay,
   Text,
   Tooltip,
+  useColorModeValue,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
@@ -54,14 +55,12 @@ const CreatePasswordPopup = () => {
     }
   };
 
+  const bgInput = useColorModeValue("#AFC8AD", "#DD6B20");
+
   return (
     <>
       <Tooltip label="Debes iniciar sesión">
-        <Button
-          colorScheme="orange"
-          onClick={onOpen}
-          isDisabled={user === null}
-        >
+        <Button bg={bgInput} onClick={onOpen} isDisabled={user === null}>
           Crear contraseña personalizada
         </Button>
       </Tooltip>
@@ -99,11 +98,7 @@ const CreatePasswordPopup = () => {
                 <Button variant="ghost" onClick={onClose}>
                   Cancelar
                 </Button>
-                <Button
-                  colorScheme="orange"
-                  mr={3}
-                  onClick={HandleCreatePassword}
-                >
+                <Button bg={bgInput} mr={3} onClick={HandleCreatePassword}>
                   Guardar Contraseña
                 </Button>
               </Box>

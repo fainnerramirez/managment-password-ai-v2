@@ -31,6 +31,7 @@ import {
   Avatar,
   InputGroup,
   InputRightElement,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import { GetPasswordById, GetPasswordsByUser } from "../firebase/actions";
@@ -64,12 +65,14 @@ const ProfilePopup = ({ password }) => {
     GetAll();
   }, [user]);
 
+  const bgInput = useColorModeValue("#AFC8AD", "#DD6B20");
+
   return (
     <>
       <Tooltip label="Debes iniciar sesión">
         <Button
           rightIcon={<FaUserCog />}
-          colorScheme="orange"
+          bg={bgInput}
           onClick={onOpen}
           isDisabled={user === null}
         >
@@ -85,7 +88,7 @@ const ProfilePopup = ({ password }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader background={"#DD6B20"} color={"#FFFFFF"}>
+          <ModalHeader background={bgInput} color={"#FFFFFF"}>
             <Wrap>
               <WrapItem display={"flex"} alignItems={"center"}>
                 <Avatar size="md" name="Dan Abrahmov" src={user?.photoURL} />

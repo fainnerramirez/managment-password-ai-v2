@@ -18,6 +18,7 @@ import {
   Tooltip,
   VStack,
   useClipboard,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import password from "./assets/password.png";
@@ -87,16 +88,21 @@ function App() {
     toast.success("¡Cierre de sesión exitosa!");
   };
 
+  const bg = useColorModeValue("#EBF3E8", "#2d3250");
+  const colorTitle = useColorModeValue("#88AB8E", "white");
+  const colorText = useColorModeValue("#000000", "#f9b17a");
+  const bgInput = useColorModeValue("#AFC8AD", "#DD6B20");
+
   return (
     <Layout>
       <Navbar />
       <HStack w={"100%"}>
-        <Box bg={"#2d3250"} h={"100vh"} w={"50%"}>
+        <Box bg={bg} h={"100vh"} w={"50%"}>
           <Box textAlign={"center"}>
-            <Heading color={"#ffffff"} mt={10}>
+            <Heading color={colorTitle} mt={10}>
               Genera contraseñas seguras <br /> al instante con IA
             </Heading>
-            <Text marginTop={10} color={"#f9b17a"}>
+            <Text marginTop={10} color={colorText}>
               Dile la longitud y la complejidad que quieres que tenga y <br />{" "}
               deja que la IA genere tu contraseña
             </Text>
@@ -108,7 +114,7 @@ function App() {
               m={"auto"}
             >
               <InputGroup>
-                <InputLeftAddon bg={"#DD6B20"} color={"#2d3250"}>
+                <InputLeftAddon bg={bgInput} color={"#2d3250"}>
                   Longitud
                 </InputLeftAddon>
                 <NumberInput max={25} min={8} w={"100%"}>
@@ -120,7 +126,7 @@ function App() {
                 </NumberInput>
               </InputGroup>
               <Select
-                bg={"#DD6B20"}
+                bg={bgInput}
                 placeholder="Escoja la complejidad de la contraseña"
                 color={"#2d3250"}
                 onChange={(e) => setComplexity(e.target.value)}
@@ -145,7 +151,7 @@ function App() {
                     isDisabled={!long || !complexity}
                     isLoading={isLoading}
                     color={"#2d3250"}
-                    colorScheme="orange"
+                    bg={bgInput}
                   >
                     Generar contraseña con IA
                   </Button>
@@ -157,7 +163,7 @@ function App() {
                   leftIcon={<FcGoogle />}
                   onClick={handleGoogleProvider}
                   variant={"outline"}
-                  colorScheme="orange"
+                  bg={bgInput}
                 >
                   Ingresa con Google
                 </Button>
@@ -183,7 +189,7 @@ function App() {
             <ProfilePopup />
             <Button
               rightIcon={<IoMdLogOut />}
-              colorScheme="orange"
+              bg={bgInput}
               onClick={handleLogout}
             >
               Salir
@@ -219,7 +225,7 @@ function App() {
                 textAlign={"center"}
               />
               <Button
-                colorScheme="orange"
+                bg={bgInput}
                 onClick={onCopy}
                 isDisabled={!generatePassword}
               >
