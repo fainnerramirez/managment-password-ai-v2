@@ -119,6 +119,7 @@ function App() {
                 </InputLeftAddon>
                 <NumberInput max={25} min={8} w={"100%"}>
                   <NumberInputField
+                    color={"#000000"}
                     placeholder="Ingrese la longitud de la contraseña"
                     bg={"white"}
                     onChange={(e) => setLong(e.target.value)}
@@ -184,7 +185,7 @@ function App() {
             </VStack>
           </Box>
         </Box>
-        <VStack w={"50%"} height={"100vh"}>
+        <VStack w={"50%"} height={"100vh"} bg={"#ffffff"}>
           <Flex marginTop={5} width={"90%"} justifyContent={"space-between"}>
             <ProfilePopup />
             <Button
@@ -223,6 +224,7 @@ function App() {
                 fontSize={30}
                 variant={"unstyled"}
                 textAlign={"center"}
+                color={"#000000"}
               />
               <Button
                 bg={bgInput}
