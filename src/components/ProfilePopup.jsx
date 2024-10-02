@@ -40,6 +40,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import moment from "moment/moment";
 import { UserContext } from "../context/userContext";
 import { FaRegEye, FaRegEyeSlash, FaUserCog } from "react-icons/fa";
+import { MdContentPaste } from "react-icons/md";
 import "moment/locale/es";
 moment.locale("es");
 
@@ -50,10 +51,6 @@ const ProfilePopup = ({ password }) => {
   const [viewPass, setViewPass] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { user } = useContext(UserContext);
-
-  const HandlePasswordSingle = async (passwordId) => {
-    await GetPasswordById(passwordId);
-  };
 
   useEffect(() => {
     const GetAll = async (event) => {
@@ -66,6 +63,21 @@ const ProfilePopup = ({ password }) => {
   }, [user]);
 
   const bgInput = useColorModeValue("#AFC8AD", "#DD6B20");
+
+  const HandlePasswordSingle = async (passwordId) => {
+    await GetPasswordById(passwordId);
+  };
+
+  const handleCopyPassword = async (password) => {
+    navigator.clipboard
+      .writeText(password)
+      .then(() => {
+        toast.info("¡Contraseña copiada!");
+      })
+      .catch((error) => {
+        toast.error("¡Hubo un error al copiar!");
+      });
+  };
 
   return (
     <>
@@ -141,6 +153,14 @@ const ProfilePopup = ({ password }) => {
                                 onClick={() => setViewPass(!viewPass)}
                               >
                                 {viewPass ? <FaRegEyeSlash /> : <FaRegEye />}
+                              </Button>
+                              <Button
+                                onClick={() =>
+                                  handleCopyPassword(item.password)
+                                }
+                                size={"xl"}
+                              >
+                                <MdContentPaste />
                               </Button>
                             </InputRightElement>
                           </InputGroup>
